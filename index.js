@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
@@ -13,6 +15,13 @@ app.use(express.static("public"));
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
+
+const uploadDir = path.join(__dirname, "uploads");
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+  console.log("📂 Carpeta 'uploads/' creada automáticamente.");
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
